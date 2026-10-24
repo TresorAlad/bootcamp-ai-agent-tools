@@ -1,0 +1,11 @@
+.env
+**/.env
+**/chat.db
+**/__pycache__/
+**/.venv/
+**/node_modules/
+**/dist/
+client_secret.json
+client_secret_*.json
+**/client_secret*.json
+.credentials/
