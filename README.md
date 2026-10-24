@@ -56,13 +56,21 @@ Autorisez Calendar et Drive en lecture ; copiez le refresh token dans `.env`.
 
 Le `Dockerfile` à la racine build le frontend React et sert l'UI depuis FastAPI (`backend/static`).
 
+### Render (gratuit, même Dockerfile)
+
+Si Railway est indisponible (trial expiré), utiliser [Render](https://render.com).
+
+1. **New** → **Blueprint** ou **Web Service** → repo GitHub `bootcamp-ai-agent-tools`
+2. **Runtime** : **Docker** (fichier `Dockerfile` à la racine, ou `render.yaml`)
+3. **Environment** : ajouter toutes les variables de `backend/.env.example`
+4. **Health check path** : `/health`
+5. URL Render du type `https://bootcamp-ai-agent-tools.onrender.com` → soumission devoir
+
+Plan free : le service peut s’endormir après inactivité (première requête lente).
+
 ### Railway
 
-1. [railway.app](https://railway.app) → **New Project** → **GitHub Repo** → `bootcamp-ai-agent-tools`
-2. Railway détecte `railway.toml` et le `Dockerfile`.
-3. **Variables** : copier toutes les clés de `backend/.env.example` (valeurs réelles dans le dashboard Railway, jamais dans Git).
-4. **Networking** → **Generate Domain** → URL publique du chat (soumission devoir).
-5. Vérifier : `https://TON-DOMAINE/health` → `{"status":"ok"}` puis ouvrir `/` pour le chat.
+Nécessite un plan payant si le trial est expiré. Sinon : **New Project** → GitHub → `railway.toml` + variables d’environnement → **Generate Domain**.
 
 ### Build local (optionnel)
 
