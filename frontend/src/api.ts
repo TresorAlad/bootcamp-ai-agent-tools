@@ -1,4 +1,6 @@
-// Thin typed wrappers around the FastAPI backend (proxied under /api by Vite).
+// Dev: Vite proxies /api to FastAPI. Prod (Docker): same origin, no /api prefix.
+
+const API_PREFIX = import.meta.env.PROD ? '' : '/api'
 
 export type Role = 'user' | 'assistant' | 'system-notification' | 'note'
 
@@ -48,7 +50,7 @@ type StreamHandlers = {
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response
   try {
-    response = await fetch(`/api${path}`, {
+    response = await fetch(`${API_PREFIX}${path}`, {
       ...init,
       headers: { 'Content-Type': 'application/json', ...init?.headers },
     })
@@ -97,7 +99,7 @@ export async function sendMessageStream(
 ): Promise<void> {
   let response: Response
   try {
-    response = await fetch('/api/chat', {
+    response = await fetch(`${API_PREFIX}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ conversation_id: conversationId, message, model }),
@@ -144,7 +146,7 @@ export async function sendMessageStream(
           status?: 'running' | 'done'
         }
         if (event.type === 'delta' && event.content) handlers.onDelta(event.content)
-        if (event.type === 'tool') handlers.onTool?.(event)
+        if (event.type === 'tool') handlers.onTool?.(event as ToolEvent)
         if (event.type === 'done') {
           streamFinished = true
           handlers.onDone({

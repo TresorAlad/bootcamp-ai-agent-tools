@@ -52,13 +52,28 @@ uv run python scripts/google_oauth_setup.py
 
 Autorisez Calendar et Drive en lecture ; copiez le refresh token dans `.env`.
 
-## Déploiement (soumission)
+## Déploiement (Railway + Docker, une URL)
 
-1. Backend : Render, Railway, Fly.io, etc. (uvicorn, variables d'environnement)
-2. Frontend : Vercel ou Netlify avec `VITE_API_URL` ou proxy vers l'URL du backend
-3. Soumettre l'URL publique de l'interface de chat
+Le `Dockerfile` à la racine build le frontend React et sert l'UI depuis FastAPI (`backend/static`).
 
-Pour l'évaluation : prévoir des comptes ou dossiers de test, pas vos données personnelles sensibles.
+### Railway
+
+1. [railway.app](https://railway.app) → **New Project** → **GitHub Repo** → `bootcamp-ai-agent-tools`
+2. Railway détecte `railway.toml` et le `Dockerfile`.
+3. **Variables** : copier toutes les clés de `backend/.env.example` (valeurs réelles dans le dashboard Railway, jamais dans Git).
+4. **Networking** → **Generate Domain** → URL publique du chat (soumission devoir).
+5. Vérifier : `https://TON-DOMAINE/health` → `{"status":"ok"}` puis ouvrir `/` pour le chat.
+
+### Build local (optionnel)
+
+```bash
+docker build -t bootcamp-ai-agent .
+docker run --rm -p 8000:8000 --env-file backend/.env bootcamp-ai-agent
+```
+
+UI : http://127.0.0.1:8000/
+
+Pour l'évaluation : comptes et dossiers de test, secrets uniquement sur l'hébergeur.
 
 ## Outils enregistrés
 
